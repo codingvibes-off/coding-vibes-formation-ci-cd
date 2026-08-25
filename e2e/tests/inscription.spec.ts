@@ -9,7 +9,7 @@ test.describe('Formulaire d\'inscription', () => {
     await inscriptionPage.goto();
   });
 
-  test('affiche le formulaire avec les valeurs par défaut', async () => {
+  test('affiche le formulaire avec les valeurs par défaut 001', async () => {
     await expect(inscriptionPage.prenomInput).toHaveValue('');
     await expect(inscriptionPage.emailInput).toHaveValue('');
     await expect(inscriptionPage.niveauSelect).toHaveValue('debutant');

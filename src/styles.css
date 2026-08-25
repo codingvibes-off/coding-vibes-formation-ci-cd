@@ -1,0 +1,23 @@
+:root {
+  --bg: #0A0A0A;
+  --bg-elevated: #141414;
+  --border: #262626;
+  --gold: #FFD700;
+  --teal: #2DD4BF;
+  --text: #F5F5F5;
+  --text-muted: #A3A3A3;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+button { font-family: inherit; }

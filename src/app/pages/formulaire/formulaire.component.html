@@ -1,0 +1,53 @@
+<div class="page">
+  <div class="card">
+    <div class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span class="brand-name">Coding <span class="accent">Vibes</span></span>
+    </div>
+
+    <h1>Rejoins la formation</h1>
+    <p class="subtitle">Inscris-toi pour accéder aux cours QA Automation &amp; IA.</p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <label class="field">
+        <span class="label">Prénom</span>
+        <input
+          type="text"
+          formControlName="prenom"
+          placeholder="Ada"
+          [class.invalid]="submitted && f.prenom.invalid"
+        />
+        @if (submitted && f.prenom.invalid) {
+          <span class="error">Merci d'indiquer ton prénom (2 caractères min).</span>
+        }
+      </label>
+
+      <label class="field">
+        <span class="label">Email</span>
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="ada@coding-vibes.fr"
+          [class.invalid]="submitted && f.email.invalid"
+        />
+        @if (submitted && f.email.invalid) {
+          <span class="error">Merci d'indiquer un email valide.</span>
+        }
+      </label>
+
+      <label class="field">
+        <span class="label">Niveau</span>
+        <select formControlName="niveau">
+          <option value="debutant">Débutant</option>
+          <option value="intermediaire">Intermédiaire</option>
+          <option value="avance">Avancé</option>
+        </select>
+      </label>
+
+      <button type="submit" class="cta">
+        Voir les vidéos
+        <span class="arrow">→</span>
+      </button>
+    </form>
+  </div>
+</div>

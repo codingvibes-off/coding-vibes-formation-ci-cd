@@ -1,0 +1,47 @@
+<div class="page">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span class="brand-name">Coding <span class="accent">Vibes</span></span>
+    </div>
+    <button class="link-btn" (click)="retourFormulaire()">← Formulaire</button>
+  </header>
+
+  <main class="content">
+    <div class="intro">
+      @if (inscription(); as u) {
+        <p class="eyebrow">Bienvenue {{ u.prenom }} 👋</p>
+      } @else {
+        <p class="eyebrow">Bienvenue 👋</p>
+      }
+      <h1>Toutes les <span class="accent">vidéos</span></h1>
+      <p class="subtitle">Chargées en direct depuis YouTube.</p>
+    </div>
+
+    @if (chargement()) {
+      <div class="state">
+        <div class="spinner"></div>
+        <p>Chargement des vidéos…</p>
+      </div>
+    } @else if (erreur()) {
+      <div class="state">
+        <p>Impossible de charger les vidéos pour le moment.</p>
+      </div>
+    } @else {
+      <div class="grid">
+        @for (v of videos(); track v.id) {
+          <a class="card" [href]="v.url" target="_blank" rel="noopener">
+            <div class="thumb-wrap">
+              <img [src]="v.miniature" [alt]="v.titre" class="thumb" loading="lazy" />
+              <span class="play">▶</span>
+            </div>
+            <div class="card-body">
+              <h2>{{ v.titre }}</h2>
+              <span class="auteur">{{ v.auteur }}</span>
+            </div>
+          </a>
+        }
+      </div>
+    }
+  </main>
+</div>

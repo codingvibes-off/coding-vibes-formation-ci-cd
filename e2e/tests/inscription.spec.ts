@@ -45,7 +45,7 @@ test.describe('Formulaire d\'inscription', () => {
     await expect(inscriptionPage.niveauSelect).toHaveValue('avance');
   });
 
-  test('un formulaire valide redirige vers la page des formations', async ({ page }) => {
+  test('un formulaire valide redirige vers la page des formations --  006', async ({ page }) => {
     await inscriptionPage.sinscrire({ prenom: 'Ada', email: 'ada@coding-vibes.fr', niveau: 'intermediaire' });
 
     await expect(page).toHaveURL(/\/$/);

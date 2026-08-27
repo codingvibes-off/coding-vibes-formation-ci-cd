@@ -39,7 +39,7 @@ test.describe('Formulaire d\'inscription', () => {
     await expect(inscriptionPage.prenomError).toBeHidden();
   });
 
-  test('le niveau sélectionné est bien pris en compte', async () => {
+  test('le niveau sélectionné est bien pris en compte 005', async () => {
     await inscriptionPage.niveauSelect.selectOption('avance');
 
     await expect(inscriptionPage.niveauSelect).toHaveValue('avance');

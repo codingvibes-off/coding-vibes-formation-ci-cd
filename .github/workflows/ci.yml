@@ -27,7 +27,7 @@ jobs:
         id: setup-chrome
 
       - name: Run build production
-        run: npm run build --configuration production
+        run: npm run build -- --configuration production
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps

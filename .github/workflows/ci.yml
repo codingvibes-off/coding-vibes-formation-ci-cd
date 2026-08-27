@@ -42,16 +42,7 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7
-          
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/coding-vibes-formation/browser
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-  
   deploy:
     needs: build-and-test
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -82,7 +73,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/coding-vibes/browser
+          path: dist/coding-vibes-formation/browser
 
       - name: Deploy to GitHub Pages
         id: deployment

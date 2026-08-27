@@ -68,7 +68,7 @@ jobs:
         run: npm ci
 
       - name: Build production
-        run: npm run build -- --configuration production
+        run: npm run build -- --configuration production --base-href /coding-vibes-formation-ci-cd/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

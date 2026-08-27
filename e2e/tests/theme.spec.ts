@@ -16,7 +16,7 @@ test.describe('Thème clair / sombre', () => {
     await expect(inscriptionPage.themeToggle).toHaveText('🌙');
   });
 
-  test('bascule en mode sombre au clic et inversement', async ({ page }) => {
+  test('bascule en mode sombre au clic et inversement 006', async ({ page }) => {
     const inscriptionPage = new InscriptionPage(page);
     await inscriptionPage.goto();
 

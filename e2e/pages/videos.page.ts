@@ -4,7 +4,7 @@ import { BasePage } from './base.page';
 export class VideosPage extends BasePage {
   readonly title: Locator = this.page.locator('h1');
   readonly welcomeMessage: Locator = this.page.locator('.eyebrow');
-  readonly backButton: Locator = this.page.locator('button.link-btn');
+  readonly inscriptionLink: Locator = this.page.locator('button.link-btn');
   readonly spinner: Locator = this.page.locator('.spinner');
   readonly errorState: Locator = this.page.locator('.state p');
   readonly videoCards: Locator = this.page.locator('.grid .card');
@@ -14,7 +14,7 @@ export class VideosPage extends BasePage {
   }
 
   async goto(): Promise<void> {
-    await this.page.goto('/videos');
+    await this.page.goto('/');
   }
 
   async attendreChargementTermine(): Promise<void> {

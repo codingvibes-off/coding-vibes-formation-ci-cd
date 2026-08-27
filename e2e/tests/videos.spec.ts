@@ -15,14 +15,13 @@ test.describe('Page vidéos', () => {
     await expect(videosPage.welcomeMessage).toContainText('Bienvenue Ada');
   });
 
-  test('affiche un message de bienvenue générique sans inscription préalable', async ({ page }) => {
+  test('affiche un message générique sans inscription préalable', async ({ page }) => {
     await mockVideosApiSuccess(page);
 
     const videosPage = new VideosPage(page);
     await videosPage.goto();
 
-    await expect(videosPage.welcomeMessage).toContainText('Bienvenue');
-    await expect(videosPage.welcomeMessage).not.toContainText('Bienvenue A');
+    await expect(videosPage.welcomeMessage).toHaveText('Nos formations');
   });
 
   test('affiche la grille de vidéos une fois le chargement terminé', async ({ page }) => {
@@ -61,12 +60,12 @@ test.describe('Page vidéos', () => {
     await expect(videosPage.videoCardTitle(0)).toHaveText('Vidéo indisponible');
   });
 
-  test('le bouton retour ramène vers le formulaire d\'inscription', async ({ page }) => {
+  test('le lien "S\'inscrire" mène vers le formulaire d\'inscription', async ({ page }) => {
     await mockVideosApiSuccess(page);
 
     const videosPage = new VideosPage(page);
     await videosPage.goto();
-    await videosPage.backButton.click();
+    await videosPage.inscriptionLink.click();
 
     await expect(page).toHaveURL(/\/inscription$/);
   });

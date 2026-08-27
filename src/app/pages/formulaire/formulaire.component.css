@@ -5,9 +5,7 @@
   justify-content: center;
   padding: 24px;
   background:
-    radial-gradient(circle at 15% 20%, rgba(255, 215, 0, 0.08), transparent 40%),
-    radial-gradient(circle at 85% 80%, rgba(45, 212, 191, 0.10), transparent 40%),
-    var(--bg);
+    radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 45%);
 }
 
 .card {
@@ -30,7 +28,7 @@
 }
 
 .brand-mark {
-  color: var(--gold);
+  color: var(--accent);
   font-family: monospace;
   font-size: 18px;
 }
@@ -40,7 +38,7 @@
 }
 
 .accent {
-  color: var(--teal);
+  color: var(--accent);
 }
 
 h1 {
@@ -70,7 +68,7 @@ h1 {
 }
 
 input, select {
-  background: #0F0F0F;
+  background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 11px 12px;
@@ -81,12 +79,12 @@ input, select {
 }
 
 input:focus, select:focus {
-  border-color: var(--teal);
-  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
 }
 
 input.invalid {
-  border-color: #F87171;
+  border-color: var(--danger);
 }
 
 select {
@@ -97,15 +95,15 @@ select {
 }
 
 .error {
-  color: #F87171;
+  color: var(--danger);
   font-size: 12px;
 }
 
 .cta {
   width: 100%;
   margin-top: 8px;
-  background: var(--gold);
-  color: #0A0A0A;
+  background: var(--accent);
+  color: var(--accent-contrast);
   border: none;
   border-radius: 8px;
   padding: 13px 16px;
@@ -121,7 +119,7 @@ select {
 
 .cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.25);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--accent) 30%, transparent);
 }
 
 .arrow {

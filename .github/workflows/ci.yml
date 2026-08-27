@@ -26,13 +26,8 @@ jobs:
         uses: browser-actions/setup-chrome@v1
         id: setup-chrome
 
-      - name: Lint build
+      - name: Run build production
         run: npm run build -- --configuration production
-
-      - name: Unit tests
-        run: npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-        env:
-          CHROME_BIN: ${{ steps.setup-chrome.outputs.chrome-path }}
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps

@@ -16,14 +16,14 @@ test.describe('Formulaire d\'inscription', () => {
     await expect(inscriptionPage.submitButton).toBeVisible();
   });
 
-  test('une soumission vide affiche les erreurs de validation', async () => {
+  test('une soumission vide affiche les erreurs de validation - 002', async () => {
     await inscriptionPage.soumettre();
 
     await expect(inscriptionPage.prenomError).toBeVisible();
     await expect(inscriptionPage.emailError).toBeVisible();
   });
 
-  test('un prénom trop court affiche une erreur de validation', async () => {
+  test('un prénom trop court affiche une erreur de validation 003', async () => {
     await inscriptionPage.remplirFormulaire({ prenom: 'A', email: 'ada@coding-vibes.fr' });
     await inscriptionPage.soumettre();
 
@@ -45,9 +45,9 @@ test.describe('Formulaire d\'inscription', () => {
     await expect(inscriptionPage.niveauSelect).toHaveValue('avance');
   });
 
-  test('un formulaire valide redirige vers /videos', async ({ page }) => {
+  test('un formulaire valide redirige vers la page des formations', async ({ page }) => {
     await inscriptionPage.sinscrire({ prenom: 'Ada', email: 'ada@coding-vibes.fr', niveau: 'intermediaire' });
 
-    await expect(page).toHaveURL(/\/videos$/);
+    await expect(page).toHaveURL(/\/$/);
   });
 });

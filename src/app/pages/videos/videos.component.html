@@ -4,7 +4,7 @@
       <span class="brand-mark">&lt;/&gt;</span>
       <span class="brand-name">Coding <span class="accent">Vibes</span></span>
     </div>
-    <button class="link-btn" (click)="retourFormulaire()">← Formulaire</button>
+    <button class="link-btn" (click)="retourFormulaire()">S'inscrire</button>
   </header>
 
   <main class="content">
@@ -12,10 +12,10 @@
       @if (inscription(); as u) {
         <p class="eyebrow">Bienvenue {{ u.prenom }} 👋</p>
       } @else {
-        <p class="eyebrow">Bienvenue 👋</p>
+        <p class="eyebrow">Nos formations</p>
       }
-      <h1>Toutes les <span class="accent">vidéos</span></h1>
-      <p class="subtitle">Chargées en direct depuis YouTube.</p>
+      <h1>Toutes les <span class="accent">formations</span></h1>
+      <p class="subtitle">Vidéos QA Automation &amp; IA, chargées en direct depuis YouTube.</p>
     </div>
 
     @if (chargement()) {

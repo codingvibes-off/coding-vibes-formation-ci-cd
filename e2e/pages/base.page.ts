@@ -7,5 +7,9 @@ export abstract class BasePage {
     return this.page.locator('.brand .brand-name');
   }
 
+  get themeToggle(): Locator {
+    return this.page.locator('button.theme-toggle');
+  }
+
   abstract goto(): Promise<void>;
 }

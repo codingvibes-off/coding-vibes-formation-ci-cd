@@ -18,7 +18,7 @@ test.describe('Thème clair / sombre', () => {
 
   test('bascule en mode sombre au clic et inversement 006', async ({ page }) => {
     const inscriptionPage = new InscriptionPage(page);
-    await inscriptionPage.g
+    await inscriptionPage.goto();
 
     await inscriptionPage.themeToggle.click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');

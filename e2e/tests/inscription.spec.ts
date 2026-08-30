@@ -33,7 +33,7 @@ test.describe('Formulaire d\'inscription', () => {
 
   test('un email invalide affiche une erreur de validation - 004', async () => {
     await inscriptionPage.remplirFormulaire({ prenom: 'Ada', email: 'pas-un-email' });
-    await inscriptionP
+    await inscriptionPage.soumettre();
 
     await expect(inscriptionPage.emailError).toBeVisible();
     await expect(inscriptionPage.prenomError).toBeHidden();

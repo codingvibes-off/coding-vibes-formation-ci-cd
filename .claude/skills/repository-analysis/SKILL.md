@@ -1,102 +1,38 @@
 ---
 name: repository-analysis
-description: Analyse LOCALE d'un repository (stack technique, tests, Docker,
-  workflows GitHub Actions existants) avant génération d'une configuration
-  CI/CD. Ne nécessite aucun accès réseau ni token — lecture de fichiers
-  uniquement.
+description: Analyse LOCALE d'un repository (stack technique, tests, Docker, workflows GitHub Actions existants) avant génération d'une configuration CI/CD. Ne nécessite aucun accès réseau ni token — lecture de fichiers uniquement. Appelée en première étape par l'orchestrateur CI/CD, ou directement par l'utilisateur pour un audit ponctuel du repo.
 ---
 
 ## Rôle
-
-Cette Skill analyse un repository local et produit un rapport factuel
-sur son état actuel (stack technique, tests, Docker, workflows GitHub
-Actions existants).
-
-Elle ne juge pas si le projet est "prêt" et ne génère aucun fichier
-de configuration CI/CD — ces responsabilités appartiennent exclusivement
-à la Skill `cicd-generation`, qui utilise ce rapport comme entrée.
-
+Analyser un repository local et produire un rapport factuel sur son état actuel (stack technique, tests, Docker, workflows GitHub Actions existants). Ne juge rien, ne génère aucun fichier de configuration CI/CD — rôle exclusif de `cicd-generation`.
 
 ## Déclencheurs
-
-- Avant toute génération de configuration CI/CD sur un repo, en amont
-  de `cicd-generation`
-- Avant de proposer une stratégie de tests, en amont de `test-strategy`
-- Quand l'utilisateur demande explicitement "analyse mon projet" ou
-  "qu'est-ce qu'il y a dans ce repo"
-- Quand un nouveau repo est ajouté à l'orchestrateur et qu'aucun
-  rapport d'analyse n'existe encore pour lui
-- Quand un fichier structurant a changé depuis le dernier rapport
-  (ex: `package.json`, `angular.json`, `.github/workflows/*.yml`,
-  ajout/suppression d'un `Dockerfile`) — pas à chaque commit
-
+- Appelée en étape 1 par l'orchestrateur (trigger "Analyse le projet")
+- Directement par l'utilisateur : "analyse mon projet", "qu'est-ce qu'il y a dans ce repo" (hors contexte pipeline — audit simple, sans enchaîner les skills suivantes)
+- Quand `repository-analysis-report.json` n'existe pas encore pour ce repo
+- Quand un fichier structurant a changé depuis le timestamp du dernier `repository-analysis-report.json` (`package.json`, `angular.json`, `.github/workflows/*.yml`, apparition/suppression d'un `Dockerfile`) — pas à chaque commit
 
 ## Checklist
-
-1. Analyser le projet dans cet ordre précis : stack technique, tests,
-   Docker, workflows GitHub Actions existants.
-
-2. Stack technique
-   - Lire `package.json` → framework principal, version
-   - Vérifier la cohérence entre `package-lock.json` et `package.json`
-   - Lire `angular.json` séparément → configurations de build disponibles
-
-3. Tests
-   - Chercher les dossiers `e2e/` et `tests/`
-   - Lire les scripts `test` et `e2e` dans `package.json`
-   - Compter les fichiers de test présents, identifier le framework
-   - NE PAS exécuter les tests (rôle de `pipeline-execution`)
-
-4. Docker
-   - Chercher un `Dockerfile` dans tout le repo, pas uniquement à la racine
-   - Remonter un booléen `true`/`false`, jamais une conclusion du type
-     "le projet n'utilise pas Docker"
-
-5. Workflows GitHub Actions existants
-   - Vérifier la présence de `.github/workflows/ci.yml` (booléen)
-   - Si présent, lister les steps existants tels quels
-   - NE PAS juger si une étape manque (rôle de `cicd-generation`)
+1. Détection du type de projet en amont : chercher `package.json` (Node), `requirements.txt`/`pyproject.toml` (Python), `go.mod` (Go), etc. Si aucun reconnu → `"stack": "unknown"`, ne pas bloquer le reste.
+2. **Stack technique** (si Node) : lire `package.json` → framework principal, version ; cohérence `package-lock.json` vs `package.json` ; lire `angular.json` séparément si présent → configurations de build disponibles. Si monorepo (plusieurs `package.json`) → lister chaque sous-projet séparément.
+3. **Tests** : chercher `e2e/`, `tests/` ; lire scripts `test`/`e2e` dans `package.json` ; compter les fichiers de test, identifier le framework. Ne pas exécuter (rôle de `execution-ci-cd`).
+4. **Docker** : chercher un `Dockerfile` dans tout le repo. Retourner un booléen brut, jamais une interprétation.
+5. **Workflows GitHub Actions existants** : vérifier `.github/workflows/ci.yml` (booléen). Si présent, lister les steps tels quels, sans juger de ce qui manque (rôle de `cicd-generation`).
 
 ## Tools à utiliser
-
-- `read_file` : lire le contenu d'un fichier dont le chemin est déjà
-  connu (package.json, angular.json, package-lock.json, ci.yml)
-- `list_directory` : lister le contenu d'un dossier connu
-  (e2e/, tests/, .github/workflows/)
-- `search_files` : localiser un fichier par nom dans TOUT le repo,
-  sans connaître son chemin à l'avance (Dockerfile, playwright.config.ts)
-
-Cette Skill n'utilise AUCUN Tool d'exécution (run_command) ni AUCUN
-Tool réseau (appel API GitHub) — cohérent avec le Rôle défini ci-dessus.
-
+- `read_file`, `list_directory`, `search_files` uniquement — aucun `run_command`, aucun appel réseau.
 
 ## Format de sortie
+Écrire `./repository-analysis-report.json` :
 
-Cette Skill retourne uniquement un objet JSON valide en sortie de son
-exécution — jamais un fichier écrit sur le disque, jamais de texte
-autour. L'orchestrateur reçoit ce JSON directement en mémoire et
-décide quoi en faire (le transmettre à `test-strategy`, l'afficher...).
-
+```json
 {
-  "stack": {
-    "framework": string,
-    "version": string | null,
-    "lockfile_consistent": boolean
-  },
-  "tests": {
-    "e2e": {
-      "detected": boolean,
-      "framework": string | null,
-      "test_files_count": number | null,
-      "folder": string | null
-    }
-  },
-  "docker": {
-    "detected": boolean
-  },
-  "existing_workflows": {
-    "detected": boolean,
-    "file": string | null,
-    "steps": string[]
-  }
+  "generated_at": "",
+  "stack": { "type": "node|python|go|unknown", "framework": "", "version": "" },
+  "monorepo": { "detected": false, "projects": [] },
+  "tests": { "unit_command": "", "e2e_command": "", "test_files_count": 0, "framework": "" },
+  "docker": { "dockerfile_found": false },
+  "ci": { "workflow_found": false, "existing_steps": [] }
 }
+```
+Aucun texte hors JSON. En cas d'erreur de lecture, remonter `"status": "failed"` avec `"error"`.

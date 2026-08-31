@@ -1,0 +1,28 @@
+{
+  "status": "success",
+  "missing_tests": [
+    {
+      "type": "integration",
+      "priority": "medium",
+      "target": "src/app/services (services + composants avec dépendances HTTP réelles)",
+      "command": "ng test --include='**/*.integration.spec.ts'"
+    }
+  ],
+  "existing_tests": {
+    "unit": {
+      "present": true,
+      "framework": "Jasmine/Karma",
+      "files_count": 2,
+      "command": "ng test"
+    },
+    "e2e_playwright": {
+      "present": true,
+      "framework": "Playwright",
+      "files_count": 4,
+      "tests_count": 19,
+      "command": "npm run e2e",
+      "list_check": "npx playwright test --list -> OK, 19 tests / 4 fichiers détectés"
+    }
+  },
+  "sonarqube": { "included": false, "reason": "aucun sonar-project.properties ni étape CI SonarQube détectée dans repository-analysis-report.json" }
+}

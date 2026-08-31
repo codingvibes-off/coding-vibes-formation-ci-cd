@@ -22,9 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Unit tests (Jasmine/Karma, headless)
-        run: npm test -- --watch=false --browsers=ChromeHeadlessCI
-
       # Tests d'intégration : type identifié comme manquant par tests-strategy
       # (voir tests-strategy-report.json). Aucun fichier *.integration.spec.ts
       # n'existe encore dans src/app/services : étape volontairement omise

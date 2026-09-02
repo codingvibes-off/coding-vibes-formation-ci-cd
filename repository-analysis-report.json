@@ -1,31 +1,13 @@
 {
-  "generated_at": "2026-08-31T00:00:00Z",
-  "stack": { "type": "node", "framework": "Angular", "version": "18.2.0" },
+  "generated_at": "2026-09-02T00:00:00Z",
+  "stack": { "type": "node", "framework": "angular", "version": "18.2.0" },
   "monorepo": { "detected": false, "projects": [] },
   "tests": {
     "unit_command": "ng test",
     "e2e_command": "playwright test",
     "test_files_count": 6,
-    "framework": "Jasmine/Karma (unit) + Playwright (e2e)"
+    "framework": "karma-jasmine + playwright"
   },
   "docker": { "dockerfile_found": false },
-  "ci": {
-    "workflow_found": true,
-    "existing_steps": [
-      "Checkout",
-      "Setup Node",
-      "Install dependencies",
-      "Setup Chrome",
-      "Run build production",
-      "Install Playwright browsers",
-      "E2E tests",
-      "Upload Playwright report",
-      "deploy: Checkout",
-      "deploy: Setup Node",
-      "deploy: Install dependencies",
-      "deploy: Build production",
-      "deploy: Upload artifact",
-      "deploy: Deploy to GitHub Pages"
-    ]
-  }
+  "ci": { "workflow_found": false, "existing_steps": [] }
 }

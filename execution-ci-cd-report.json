@@ -1,6 +1,6 @@
 {
   "status": "failed",
-  "error": "act ou Docker non disponible : la commande `act` n'est pas installée sur cette machine et le daemon Docker n'est pas actif (docker info a échoué).",
+  "error": "act ou Docker non disponible : la commande 'act' n'est pas installée sur cette machine (Docker, lui, est disponible et son daemon répond).",
   "jobs": [],
   "deploy_job_pending_confirmation": false
 }

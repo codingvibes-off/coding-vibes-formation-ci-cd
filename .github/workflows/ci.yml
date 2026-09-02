@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -16,25 +16,20 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      # Tests d'intégration : type identifié comme manquant par tests-strategy
-      # (voir tests-strategy-report.json). Aucun fichier *.integration.spec.ts
-      # n'existe encore dans src/app/services : étape volontairement omise
-      # tant qu'aucun test correspondant n'a été écrit, pour ne pas casser le pipeline.
-
-      - name: Build production
-        run: npm run build -- --configuration production
+      - name: Run unit tests
+        run: npm test -- --watch=false --browsers=ChromeHeadlessCI
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: E2E tests (Playwright)
-        run: npm run e2e
+      - name: Run e2e tests
+        run: npx playwright test
 
       - name: Upload Playwright report
         if: always()
@@ -44,19 +39,18 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
+  # Ce job se déclenche automatiquement sur GitHub (push sur main après succès des tests),
+  # mais ne doit jamais être exécuté localement par execution-ci-cd sans confirmation explicite.
   deploy:
     needs: build-and-test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && needs.build-and-test.result == 'success'
+    if: github.ref == 'refs/heads/main' && needs.build-and-test.result == 'success'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       pages: write
       id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    # Ce job se déclenche automatiquement sur GitHub (push sur main, build-and-test réussi).
-    # Il ne doit JAMAIS être exécuté localement par la skill execution-ci-cd sans confirmation explicite.
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -64,16 +58,19 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build production
-        run: npm run build -- --configuration production --base-href /coding-vibes-formation-ci-cd/
+      - name: Build application
+        run: npm run build
 
-      - name: Upload artifact
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist/coding-vibes-formation/browser

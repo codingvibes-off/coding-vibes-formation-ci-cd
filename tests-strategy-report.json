@@ -2,27 +2,23 @@
   "status": "success",
   "missing_tests": [
     {
-      "type": "integration",
-      "priority": "medium",
-      "target": "src/app/services (services + composants avec dépendances HTTP réelles)",
-      "command": "ng test --include='**/*.integration.spec.ts'"
-    }
-  ],
-  "existing_tests": {
-    "unit": {
-      "present": true,
-      "framework": "Jasmine/Karma",
-      "files_count": 2,
+      "type": "unit",
+      "priority": "high",
+      "target": "src/app/pages/videos/videos.component.ts, src/app/services/inscription.service.ts, src/app/services/videos.service.ts",
       "command": "ng test"
     },
-    "e2e_playwright": {
-      "present": true,
-      "framework": "Playwright",
-      "files_count": 4,
-      "tests_count": 19,
-      "command": "npm run e2e",
-      "list_check": "npx playwright test --list -> OK, 19 tests / 4 fichiers détectés"
+    {
+      "type": "integration",
+      "priority": "medium",
+      "target": "Interaction videos.component <-> videos.service (appel API YouTube + fallback) et formulaire.component <-> inscription.service (persistance inscription)",
+      "command": "ng test"
+    },
+    {
+      "type": "e2e_playwright",
+      "priority": "low",
+      "target": "Suite déjà présente et fonctionnelle (19 tests / 4 fichiers : inscription, navigation, theme, videos) via `npx playwright test --list`. Aucun ajout obligatoire, seule une couverture des cas d'erreur réseau supplémentaires serait un plus.",
+      "command": "npx playwright test"
     }
-  },
-  "sonarqube": { "included": false, "reason": "aucun sonar-project.properties ni étape CI SonarQube détectée dans repository-analysis-report.json" }
+  ],
+  "sonarqube": { "included": false, "reason": "Aucun sonar-project.properties ni configuration CI SonarQube détecté dans le rapport source." }
 }
